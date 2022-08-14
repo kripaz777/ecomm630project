@@ -53,6 +53,8 @@ class Product(models.Model):
 	discounted_price = models.IntegerField(default =0)
 	category = models.ForeignKey(Category,on_delete= models.CASCADE)
 	subcategory = models.ForeignKey(SubCategory,on_delete = models.CASCADE)
+	brand = models.ForeignKey(Brand,on_delete = models.CASCADE,blank = True)
+
 	stock = models.CharField(choices = STOCK,max_length = 20)
 	labels = models.CharField(choices = LABELS,blank = True,max_length = 20)
 	description = models.TextField(blank = True)
