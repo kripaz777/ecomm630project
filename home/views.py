@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.generic import View
 from .models import *
 
@@ -11,8 +11,9 @@ class Base(View):
 
 	all_brand = []
 	for i in Brand.objects.all():
+		print(i)
 		ids = Brand.objects.get(name = i).id
-		count = Product.objects.filter(brand = ids).count()
+		count = Product.objects.filter(brand_id = ids).count()
 		all_brand.append({'product_count':count,'ids':ids})
 	context['counts'] = all_brand
 
@@ -41,3 +42,14 @@ class DetailView(Base):
 		ids = Product.objects.get(slug =slug).subcategory_id
 		self.context['subcat_products'] = Product.objects.filter(subcategory_id = ids)
 		return render(request,'product-detail.html',self.context)
+
+class SearchView(Base):
+	def get(self,request):
+		if request.method == 'GET':
+			query = request.GET['query']
+			if query is not None:
+				self.context['search'] = Product.objects.filter(name__icontains = query)
+			else:
+				return redirect('/')
+
+		return render(request,'search.html',self.context)
