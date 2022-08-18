@@ -118,3 +118,26 @@ def add_to_cart(request,slug):
 			)
 			carts.save()
 			return redirect('/cart')
+
+def delete_product(request,slug):
+	username = request.user.username
+	Cart.objects.filter(slug=slug, username=username, checkout=False).delete()
+	return redirect('/cart')
+
+def reduce_product(request,slug):
+	username = request.user.username
+	if Cart.objects.filter(slug=slug, username=username, checkout=False).exists():
+		quantity = Cart.objects.get(slug=slug, username=username, checkout=False).quantity
+		price = Product.objects.filter(slug=slug).price
+		discounted_price = Product.objects.filter(slug=slug).discounted_price
+		if discounted_price > 0:
+			original_price = discounted_price
+		else:
+			original_price = price
+		if quantity>1:
+			quantity = quantity - 1
+			total = original_price * quantity
+			Cart.objects.filter(slug=slug, username=username, checkout=False).update(total=total, quantity=quantity)
+			return redirect('/cart')
+
+		return redirect('/cart')
