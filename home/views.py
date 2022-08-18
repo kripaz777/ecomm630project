@@ -87,4 +87,34 @@ def signup(request):
 	return render(request,'signup.html')
 
 
+def add_to_cart(request,slug):
+	username = request.user.username
+	if Product.objects.filter(slug = slug).exists():
+		if Cart.objects.filter(slug = slug,username = username,checkout = False).exists():
+			quantity= Cart.objects.get(slug = slug,username = username,checkout = False).quantity
+			price = Product.objects.filter(slug = slug).price
+			discounted_price = Product.objects.filter(slug = slug).discounted_price
+			if discounted_price > 0:
+				original_price = discounted_price
+			else:
+				original_price = price
+			quantity = quantity +1
+			total = original_price*quantity
+			Cart.objects.filter(slug=slug, username=username, checkout=False).update(total = total,quantity = quantity)
+			return redirect('/cart')
+		else:
+			price = Product.objects.filter(slug=slug).price
+			discounted_price = Product.objects.filter(slug=slug).discounted_price
+			if discounted_price > 0:
+				original_price = discounted_price
+			else:
+				original_price = price
 
+			carts = Cart.objects.create(
+			username = username,
+			total = original_price,
+			slug = slug,
+			items = Product.objects.filter(slug = slug)[0]
+			)
+			carts.save()
+			return redirect('/cart')

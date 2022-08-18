@@ -1,5 +1,5 @@
 from django.db import models
-
+from ckeditor.fields import RichTextField
 # Create your models here.
 class Category(models.Model):
 	name = models.CharField(max_length = 300)
@@ -57,15 +57,24 @@ class Product(models.Model):
 
 	stock = models.CharField(choices = STOCK,max_length = 20)
 	labels = models.CharField(choices = LABELS,blank = True,max_length = 20)
-	description = models.TextField(blank = True)
-	specification = models.TextField(blank = True)
+	description = RichTextField(blank = True)
+	specification = RichTextField(blank = True)
 
 	def __str__(self):
 		return self.name
 
 
 
+class Cart(models.Model):
+	username = models.CharField(max_length = 200)
+	slug = models.CharField(max_length = 400)
+	quantity = models.IntegerField()
+	total = models.IntegerField()
+	checkout = models.BooleanField(default = False)
+	items = models.ForeignKey(Product,on_delete = models.CASCADE)
 
+	def __str__(self):
+		return self.username
 
 
 
