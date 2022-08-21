@@ -149,10 +149,20 @@ def reduce_product(request,slug):
 
 
 #-------------------------------------------------------------------API-----------------------------------------------
-from rest_framework import  viewsets
+from rest_framework import  viewsets,generics
 from .serializers import *
-
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 # ViewSets define the view behavior.
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+
+class ProductList(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    filter_backends = [DjangoFilterBackend,filters.SearchFilter,filters.OrderingFilter]
+    filterset_fields = ['category', 'subcategory','brand','stock','labels']
+    search_fields = ['name', 'description','specification']
+    ordering_fields = ['price','id','discounted_price']
