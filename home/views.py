@@ -153,6 +153,9 @@ from rest_framework import  viewsets,generics
 from .serializers import *
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 # ViewSets define the view behavior.
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
@@ -166,3 +169,37 @@ class ProductList(generics.ListAPIView):
     filterset_fields = ['category', 'subcategory','brand','stock','labels']
     search_fields = ['name', 'description','specification']
     ordering_fields = ['price','id','discounted_price']
+
+class CRUDViewSet(APIView):
+	def get_object(self,pk):
+		try:
+			return  Product.objects.get(pk = pk)
+		except:
+			print('The id does not exists')
+
+	def get(self,request,pk):
+		product_data = self.get_object(pk)
+		serializer = ProductSerializer(product_data)
+		return Resonse(serializer.data)
+
+	def post(self,request,pk):
+		serializer = ProductSerializer(data = request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response({"The value is posted"})
+
+	def put(self,request,pk):
+		product_data = self.get_object(pk)
+		serializer = ProductSerializer(product_data,data = request.data,partial = True)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data)
+		return Response({'status':'The value is updated'})
+
+	def delete(self,request,pk):
+		try:
+			Product.objects.filter(id = pk).delete()
+		except:
+			return Response({'status': 'The id is not in database'})
+		return Response({'status': 'The value is updated'})
+
