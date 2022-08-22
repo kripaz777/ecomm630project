@@ -180,7 +180,7 @@ class CRUDViewSet(APIView):
 	def get(self,request,pk):
 		product_data = self.get_object(pk)
 		serializer = ProductSerializer(product_data)
-		return Resonse(serializer.data)
+		return Response(serializer.data)
 
 	def post(self,request,pk):
 		serializer = ProductSerializer(data = request.data)

@@ -9,5 +9,6 @@ router.register(r'product', ProductViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('', include(router.urls)),
-    path('product-filter/', ProductList.as_view(),name = 'product-filter')
+    path('product-filter/', ProductList.as_view(),name = 'product-filter'),
+    path('product-crud/<int:pk>', CRUDViewSet.as_view(),name = 'product-crud'),
 ]
