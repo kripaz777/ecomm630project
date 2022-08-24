@@ -42,6 +42,7 @@ class DetailView(Base):
 		self.context['products'] = Product.objects.filter(slug = slug)
 		ids = Product.objects.get(slug =slug).subcategory_id
 		self.context['subcat_products'] = Product.objects.filter(subcategory_id = ids)
+		self.context['review_product'] = ProductReview.objects.filter(slug = slug)
 		return render(request,'product-detail.html',self.context)
 
 
