@@ -76,7 +76,7 @@ class ProductReview(models.Model):
 class Cart(models.Model):
 	username = models.CharField(max_length = 200)
 	slug = models.CharField(max_length = 400)
-	quantity = models.IntegerField()
+	quantity = models.IntegerField(default = 1)
 	total = models.IntegerField()
 	checkout = models.BooleanField(default = False)
 	items = models.ForeignKey(Product,on_delete = models.CASCADE)

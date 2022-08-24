@@ -110,6 +110,10 @@ class CartView(Base):
 		username = request.user.username
 		self.context['my_cart'] = Cart.objects.filter(username = username,checkout = False)
 		return render(request,'cart.html',self.context)
+
+from django.contrib.auth.decorators import login_required
+@login_required
+
 def add_to_cart(request,slug):
 	username = request.user.username
 	if Product.objects.filter(slug = slug).exists():

@@ -111,19 +111,19 @@
                                     <div id="description" class="container tab-pane active">
                                         <h4>Product description</h4>
                                         <p>
-                                            {{product.description}}
+                                            {{product.description|safe}}
                                         </p>
                                     </div>
                                     <div id="specification" class="container tab-pane fade">
                                         <h4>Product specification</h4>
                                         <ul>
-                                            {{product.specification}}
+                                            {{product.specification|safe}}
                                         </ul>
                                     </div>
                                     <div id="reviews" class="container tab-pane fade">
                                         {% for review in review_product %}
                                         <div class="reviews-submitted">
-                                            <div class="reviewer">{{review.name}} - <span>01 Jan 2020</span></div>
+                                            <div class="reviewer">{{review.username}} - <span>01 Jan 2020</span></div>
                                             <div class="ratting">
                                                 {% for i in 1|ljust:review.star %}
                                                 <i class="fa fa-star"></i>
@@ -134,6 +134,7 @@
                                             </p>
                                         </div>
                                         {% endfor %}
+                                        {% if user.is_authenticated %}
                                         <form method = "POST" action = "/product_review/{{product.slug}}">
                                             {% csrf_token %}
                                         <div class="reviews-submit">
@@ -158,6 +159,7 @@
                                             </div>
                                         </div>
                                             </form>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
