@@ -44,6 +44,23 @@ class DetailView(Base):
 		self.context['subcat_products'] = Product.objects.filter(subcategory_id = ids)
 		return render(request,'product-detail.html',self.context)
 
+
+def product_review(request,slug):
+	username = request.user.username
+	email = request.user.email
+	if request.method == 'POST':
+		comment = request.POST['comment']
+		star = request.POST['star']
+		data = ProductReview.objects.create(
+			username = username,
+			email = email,
+			comment = comment,
+			star = star,
+			slug = slug
+		)
+		data.save()
+		return redirect(f'/detail/{slug}')
+	return redirect(f'/detail/{slug}')
 class SearchView(Base):
 	def get(self,request):
 		if request.method == 'GET':

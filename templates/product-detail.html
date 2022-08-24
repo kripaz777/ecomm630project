@@ -134,30 +134,30 @@
                                                 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.
                                             </p>
                                         </div>
+                                        <form method = "POST" action = "/product_review/{{product.slug}}">
+                                            {% csrf_token %}
                                         <div class="reviews-submit">
                                             <h4>Give your Review:</h4>
                                             <div class="ratting">
-                                                <i class="far fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                                <i class="far fa-star"></i>
+
+                                              <select name="star" id="star">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                  <option value="5">5</option>
+                                              </select>
                                             </div>
                                             <div class="row form">
-                                                <div class="col-sm-6">
-                                                    <input type="text" placeholder="Name">
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <input type="email" placeholder="Email">
-                                                </div>
                                                 <div class="col-sm-12">
-                                                    <textarea placeholder="Review"></textarea>
+                                                    <textarea name = "comment" placeholder="Review"></textarea>
                                                 </div>
-                                                <div class="col-sm-12">
-                                                    <button>Submit</button>
+                                                <div clasts="col-sm-12">
+                                                    <button type = "submit">Submit</button>
                                                 </div>
                                             </div>
                                         </div>
+                                            </form>
                                     </div>
                                 </div>
                             </div>

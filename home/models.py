@@ -64,7 +64,15 @@ class Product(models.Model):
 		return self.name
 
 
+class ProductReview(models.Model):
+	username = models.CharField(max_length = 300)
+	email = models.EmailField(max_length = 100)
+	comment = models.TextField(blank = True)
+	star = models.IntegerField(default = 1)
+	slug = models.CharField(max_length = 200)
 
+	def __str__(self):
+		return self.username
 class Cart(models.Model):
 	username = models.CharField(max_length = 200)
 	slug = models.CharField(max_length = 400)
